@@ -71,13 +71,15 @@ int main() {
 
 
                 //add octave shift 
-                midiNoteInt = midiNoteInt - usrOctaveShift; 
+                midiNoteInt = midiNoteInt - (usrOctaveShift*12); 
                 //add Time divider 
                 int catTime = midiTimeInt/velocity;
+
                 //cretae Cat readable Notes
-                string catNote = Piano[(midiNoteInt % 36)]; 
+                //#### PIANO Version! 
+                //string catNote = Piano[(midiNoteInt % 36)]; 
                 //#### MARIMBA Version! 
-                //string catNote = marimba[(midiNoteInt % 36)]; 
+                string catNote = marimba[(midiNoteInt % 36)]; 
 
                 //Build Song
                 
