@@ -1,7 +1,7 @@
 #########################################
-#		                    			#
+#                                       #
 #             - Midi Cat - 		        #
-#   create Bongocat notes form Midie	#
+#   create Bongocat notes form Midi	    #
 #					                    #
 #########################################
 
