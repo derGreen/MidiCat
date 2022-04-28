@@ -22,6 +22,8 @@ midi file have to convert to a csv file (so its more a scv to BongoCat converter
 
 #todo
 
+-need to add channel names! data in midi file: 7, 0, Title_t, "Vocals" 
+
 -Find out how matching speed for !bpm can be extractet from midi.
 
 -integradte midi to CSV in midiCat. 
