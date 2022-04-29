@@ -10,9 +10,9 @@ MIDI file has to convert to a CSV file (so its more an scv to BongoCat converter
 
 -Start midiCat.exe in cmd
 -Input CSV? The path to .csv file goes here. 
--Channel? , chose the midi channel MIT the Melodie line you need, 0 to 15 (channel 0 is only the Header, channel 10 is normally Drums) you have to try. 
--Octave shift? , ! BBongo+ has only 3 Octaves (C3 to H5) so Midi notes greater than this rollover and become lower notes again.  
-  Normal Note C4 is Midi value 60 is Keyboard key "Q" or "1" in BongoCat 
+-Channel? , chose the midi channel with the Melodie line you need, 0 to 15 (channel 0 is only the Header, channel 10 is normally Drums) you have to try. 
+-Octave shift? , !Bongo+ has only 3 Octaves (C3 to H5) so Midi notes greater than this rollover and become lower notes again.  
+Normal Note C4 is Midi value 60 is Keyboard key "Q" or "1" in BongoCat 
     When Octave Shift is 0 Bongo Key Q/1 is C3  
     When Octave Shift is 1 Bongo Key Q/1 is C4 (default)
     When Octave Shift is 2 Bongo Key Q/1 is C5
@@ -28,8 +28,6 @@ MIDI file has to convert to a CSV file (so its more an scv to BongoCat converter
 
 -Integrate midiCSV.exe in midiCat. 
 
--Export in text file.
-
 -Show all MIDI channels at once, no choosing.
 
 -Find out how many channels with Note_on command in a file, to show in menue.
@@ -42,3 +40,7 @@ MIDI file has to convert to a CSV file (so its more an scv to BongoCat converter
 
 # History
 28.04.22 create midiCat
+
+29.04.22
+-fix pause. 1st pause after note was not seperate. 
+-add output to textfile

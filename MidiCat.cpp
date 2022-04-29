@@ -24,22 +24,27 @@ int main() {
     cin >> usrPath;
  
     // Read from the text file
-    ifstream userCSV(usrPath);
-    if (userCSV.fail()) {
+    ifstream usrCSV(usrPath);
+
+    if (usrCSV.fail()) {
          cout << "No File found! \n";
         exit;
     }
-    cout << "Channel?";
+
+    cout << "Channel? \n";
     cin >> usrChannel;
 
-    cout << "ocrave shift? (dafault 1, use if high notes roll over to low notes)";
+    cout << "ocrave shift? (dafault 1, use if high notes roll over to low notes) \n";
     cin >> usrOctaveShift;  
 
-    cout << "\n";
-    cout << "!bongo+ ";
+    cout << "File is created";
+    ofstream OutFile("Cat Notes.txt");
+    OutFile << "Notes from" << usrPath;
+    OutFile << "\n";
+    OutFile << "!bongo+ ";
 
     // Use a while loop together with the getline() function to read the file line by line
-    while (getline (userCSV, CSV_Line)) {   
+    while (getline (usrCSV, CSV_Line)) {   
         
         // get Song velocity, from first Line, last argument        
         if (CSV_Line.find("Header")!= -1){
@@ -81,12 +86,12 @@ int main() {
                 //Build Song
                 
                 if (catTime == lastTime) {
-                    cout << catNote; 
+                    OutFile << catNote<<" "; 
                 } else  { 
-                    cout << " " << catNote;                   
+                    OutFile << " " << catNote;                   
                 }
                 for (int i = 0; i < (catTime-lastTime); i++){             
-                    cout << ". " ;
+                    OutFile << ". " ;
                 }
                 
                 lastTime = catTime;
@@ -97,7 +102,14 @@ int main() {
     }
 
 // Close the file
-userCSV.close();
+usrCSV.close();
+OutFile.close();
 cout << "\n";
 }
 
+
+/*
+  myfile.open ("example.txt");
+  myfile << "Writing this to a file.\n";
+  myfile.close();
+*/
