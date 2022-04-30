@@ -10,9 +10,10 @@ int main(int argc, char *argv[]) {
     int lastTime = 0;
     int delimiterPos = 0;
     int velocity = 120;
-    bool firstBeat = 1;    
+    bool firstBeat = 1;   
+    string foundChannel = " "; 
     
-    string usrChannel = argv[2];
+    string usrChannel = "2"; //argv[2];
     int usrOctaveShift = 1;
     string usrPath = argv[1];
     int usrSpeed = 1;
@@ -21,21 +22,32 @@ int main(int argc, char *argv[]) {
     const char *Piano[36] = {"v1","v1#","v2","v2#","v3","v4","v4#","v5","v5#","v6","v6#","v7","1","1#","2","2#","3","4","4#","5","5#","6","6#","7","^1","^1#","^2","^2#","^3","^4","^4#","^5","^5#","^6","^6#","^7"};
     
     
-    cout << "Input CSV file? (midi files have to convert to CSV files) \n";
+    cout << "Input CSV file? (midi files have to convert to CSV files): ";
     //cin >> usrPath;
     cout << argv[1];
- 
+    cout<< "\n";
     // Read from the text file
-    ifstream usrCSV(usrPath);
+    ifstream usrCSV1(usrPath);
 
-    if (usrCSV.fail()) {
+    if (usrCSV1.fail()) {
          cout << "No File found! \n";
         exit;
     }
 
-    cout << "Channel? midi\n";
-    //cin >> usrChannel;
-    cout << argv[2];
+    while (getline (usrCSV1, CSV_Line)) {   
+        if (CSV_Line.find("Title_t")!= -1) {            
+            foundChannel = foundChannel + CSV_Line.substr(0,CSV_Line.find(",")) + ", ";
+        };
+
+    };
+    usrCSV1.close();
+
+    ifstream usrCSV(usrPath);
+
+    cout <<  foundChannel << " as Midichannel found \n";
+    cout << "input channel to convert: ";
+    cin >> usrChannel;
+    //cout << argv[2];
 
     //cout << "ocrave shift? (dafault 1) \n";
     //cin >> usrOctaveShift;  
@@ -49,12 +61,14 @@ int main(int argc, char *argv[]) {
     cout << "\n";
     cout << "!bongo+ ";
 
+    
+
     // Use a while loop together with the getline() function to read the file line by line
     while (getline (usrCSV, CSV_Line)) {   
         
         // get Song velocity, from first Line, last argument        
         if (CSV_Line.find("Header")!= -1){
-        string velocityStr =  CSV_Line.substr(CSV_Line.rfind(",")+2,(CSV_Line.length()-CSV_Line.rfind(",")+2));        
+        string velocityStr = CSV_Line.substr(CSV_Line.rfind(",")+2,(CSV_Line.length()-CSV_Line.rfind(",")+2));        
         velocity = stoi(velocityStr); 
      
         }
@@ -101,8 +115,8 @@ int main(int argc, char *argv[]) {
                     //find Pause
                 if(!firstBeat) {
                   for (int i = 0; i < (catTime-lastTime); i++){            
-                    OutFile << ". " ;
-                    cout << ". " ;
+                    OutFile << " . " ;
+                    cout << " . " ;
                     DebugFile << "- time hop \n";
                   }
                 }
