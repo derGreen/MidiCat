@@ -4,24 +4,26 @@
 using namespace std;
 
 
-int main() {
+int main(int argc, char *argv[]) {
 
-    
     string CSV_Line; 
     int lastTime = 0;
     int delimiterPos = 0;
-    int velocity;
+    int velocity = 120;
+    bool firstBeat = 1;    
     
-    char usrChannel;
+    string usrChannel = argv[2];
     int usrOctaveShift = 1;
-    string usrPath;
+    string usrPath = argv[1];
+    int usrSpeed = 1;
     
     const char *marimba[36] = {"vq","vq#","vw","vw#","ve","vr","vr#","vt","vt#","vz","vz#","vu","q","q#","w","w#","e","r","r#","t","t#","z","z#","u","^q","^q#","^w","^w#","^e","^r","^r#","^t","^t#","^z","^z#","^u"};
     const char *Piano[36] = {"v1","v1#","v2","v2#","v3","v4","v4#","v5","v5#","v6","v6#","v7","1","1#","2","2#","3","4","4#","5","5#","6","6#","7","^1","^1#","^2","^2#","^3","^4","^4#","^5","^5#","^6","^6#","^7"};
     
     
-    cout << "Input CSV file? (midi files have to convert to CSV) \n";
-    cin >> usrPath;
+    cout << "Input CSV file? (midi files have to convert to CSV files) \n";
+    //cin >> usrPath;
+    cout << argv[1];
  
     // Read from the text file
     ifstream usrCSV(usrPath);
@@ -31,17 +33,21 @@ int main() {
         exit;
     }
 
-    cout << "Channel? \n";
-    cin >> usrChannel;
+    cout << "Channel? midi\n";
+    //cin >> usrChannel;
+    cout << argv[2];
 
-    cout << "ocrave shift? (dafault 1, use if high notes roll over to low notes) \n";
-    cin >> usrOctaveShift;  
+    //cout << "ocrave shift? (dafault 1) \n";
+    //cin >> usrOctaveShift;  
 
     cout << "File is created";
     ofstream OutFile("Cat Notes.txt");
-    OutFile << "Notes from" << usrPath;
+    ofstream DebugFile("Debug.txt");
+    OutFile << "Notes from " << usrPath;
     OutFile << "\n";
     OutFile << "!bongo+ ";
+    cout << "\n";
+    cout << "!bongo+ ";
 
     // Use a while loop together with the getline() function to read the file line by line
     while (getline (usrCSV, CSV_Line)) {   
@@ -49,7 +55,8 @@ int main() {
         // get Song velocity, from first Line, last argument        
         if (CSV_Line.find("Header")!= -1){
         string velocityStr =  CSV_Line.substr(CSV_Line.rfind(",")+2,(CSV_Line.length()-CSV_Line.rfind(",")+2));        
-        velocity = stoi(velocityStr);        
+        velocity = stoi(velocityStr); 
+     
         }
         
         if (CSV_Line.find(usrChannel) == 0) { //nur Zeilen mit Channel in pos 0 
@@ -71,11 +78,15 @@ int main() {
                 string midiVelocity = CSV_Line.substr(delimiterPos, CSV_Line.length());                
                 delimiterPos = 0; 
 
+                //DebugFile << "Midi Chanel ist " << midiChannelStr << "\n";
+                //DebugFile << "Midi Time ist " << midiTimeStr << "\n";
+                //DebugFile << "Midi Command ist " << midiCommand << "\n";    
+                
 
                 //add octave shift 
                 midiNoteInt = midiNoteInt - (usrOctaveShift*12); 
                 //add Time divider 
-                int catTime = midiTimeInt/velocity;
+                int catTime = midiTimeInt/velocity/usrSpeed;
 
                 //cretae Cat readable Notes
                 //.... PIANO Version! 
@@ -83,18 +94,30 @@ int main() {
                 //.... MARIMBA Version! 
                 string catNote = marimba[(midiNoteInt % 36)]; 
 
+                //some Debug output here: 
+                DebugFile << "Time: " << catTime << "  Note: " << catNote  << "\n";
+
                 //Build Song
-                
-                if (catTime == lastTime) {
-                    OutFile << catNote<<" "; 
-                } else  { 
-                    OutFile << " " << catNote;                   
-                }
-                for (int i = 0; i < (catTime-lastTime); i++){             
+                    //find Pause
+                if(!firstBeat) {
+                  for (int i = 0; i < (catTime-lastTime); i++){            
                     OutFile << ". " ;
+                    cout << ". " ;
+                    DebugFile << "- time hop \n";
+                  }
                 }
-                
+                    //same beat or next beat   
+                if (catTime == lastTime) {
+                    OutFile << catNote << " ";
+                    cout << catNote << " "; 
+                } else  { 
+                    OutFile << " " << catNote;    
+                    cout << " " << catNote;                 
+                }
+
                 lastTime = catTime;
+                firstBeat = false;
+
             }
             
         } 
@@ -106,10 +129,3 @@ usrCSV.close();
 OutFile.close();
 cout << "\n";
 }
-
-
-/*
-  myfile.open ("example.txt");
-  myfile << "Writing this to a file.\n";
-  myfile.close();
-*/
