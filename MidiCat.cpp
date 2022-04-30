@@ -115,18 +115,20 @@ int main(int argc, char *argv[]) {
                     //find Pause
                 if(!firstBeat) {
                   for (int i = 0; i < (catTime-lastTime); i++){            
-                    OutFile << " . " ;
-                    cout << " . " ;
-                    DebugFile << "- time hop \n";
+                    OutFile << ". " ;
+                    cout << ". " ;
+                    DebugFile << "- Pause \n";
                   }
                 }
                     //same beat or next beat   
                 if (catTime == lastTime) {
                     OutFile << catNote << " ";
                     cout << catNote << " "; 
+
                 } else  { 
                     OutFile << " " << catNote;    
-                    cout << " " << catNote;                 
+                    cout << " " << catNote;
+                    DebugFile << "- Next \n";                 
                 }
 
                 lastTime = catTime;
