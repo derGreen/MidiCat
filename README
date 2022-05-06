@@ -6,21 +6,25 @@
 #########################################
 
 # How to
-MIDI file has to convert to a CSV file (so its more an scv to BongoCat converter, but this will change in future)
+MIDI file has to convert to a CSV file (so its more a CSV to BongoCat converter, but this will change in future)
 
--Start midiCat.exe in cmd
--Input CSV? The path to .csv file goes here. 
--Channel? , chose the midi channel with the Melodie line you need, 0 to 15 (channel 0 is only the Header, channel 10 is normally Drums) you have to try. 
--Octave shift? , !Bongo+ has only 3 Octaves (C3 to H5) so Midi notes greater than this rollover and become lower notes again.  
+-Start midiCat.exe in cmd with CSV file as parameter
+-Channel?, chose the midi channel with the Melodic line you need, 0 to 15 (channel 0 is only the Header, channel 10 is normally Drums) you have to try. 
+# no octave shift in this version !
+-Octave shift?, !Bongo+ has only 3 Octaves (C3 to H5) so Midi notes greater than this rollover and become lower notes again.  
 Normal Note C4 is Midi value 60 is Keyboard key "Q" or "1" in BongoCat 
     When Octave Shift is 0 Bongo Key Q/1 is C3  
     When Octave Shift is 1 Bongo Key Q/1 is C4 (default)
     When Octave Shift is 2 Bongo Key Q/1 is C5
+-speed? You can change speed. Higer speed will slow down the song, but the notes become more precise on beat, so play on higher !bpm.       
 
 -Copy, paste text in chat, BongoCat will play it. 
 
+Program is WIP, and will be changed daily
 
 #todo
+
+-command "C_NOTE_ON" mit Velocety 0 ist auch ein C_NOTE_OFF 
 
 -Need to add channel names! Data in midi file: 7, 0, Title_t, "Vocals" 
 
@@ -37,6 +41,10 @@ Normal Note C4 is Midi value 60 is Keyboard key "Q" or "1" in BongoCat
 -Drumm support.
 
 -Cut Notes after 3 element at once to save letters. 
+
+
+
+
 
 # History
 28.04.22 create midiCat
