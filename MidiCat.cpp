@@ -38,14 +38,14 @@ int main(int argc, char *argv[])
     {
         if (CSV_Line.find("Title_t") != -1)
         {
-            foundChannel = foundChannel + CSV_Line.substr(0, CSV_Line.find(",")) + " " + CSV_Line.substr(CSV_Line.rfind(",")+1,7) + "\n";
+            foundChannel = foundChannel + CSV_Line.substr(0, CSV_Line.find(",")) + " " + CSV_Line.substr(CSV_Line.rfind(",")+1 , 8 ) + "\n";
         };
     };
     usrCSV1.close();
 
     ifstream usrCSV(usrPath);
 
-    cout << foundChannel << " as Midichannel found \n";
+    cout << foundChannel << " found as Midichannel \n";
     cout << "Midi channel?";
     cin >> usrChannel;
     // cout << argv[2];

@@ -2,5 +2,7 @@
 *.mid 
 *.txt
 RTTTL/
+.vscode/
+
 
 
