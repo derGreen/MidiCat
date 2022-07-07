@@ -38,7 +38,11 @@ int main(int argc, char *argv[])
     {
         if (CSV_Line.find("Title_t") != -1)
         {
-            foundChannel = foundChannel + CSV_Line.substr(0, CSV_Line.find(",")) + " " + CSV_Line.substr(CSV_Line.rfind(",")+1 , 8 ) + "\n";
+            foundChannel = foundChannel + CSV_Line.substr(0, CSV_Line.find(",")) + " " + CSV_Line.substr(CSV_Line.rfind(",")+1 , 8 ) + " - ";
+        };
+          if (CSV_Line.find("Text_t") != -1)
+        {
+            foundChannel = foundChannel + CSV_Line.substr(0, CSV_Line.find(",")) + " " + CSV_Line.substr(CSV_Line.rfind(",")+1 , 12 ) + "\n";
         };
     };
     usrCSV1.close();
@@ -50,8 +54,8 @@ int main(int argc, char *argv[])
     cin >> usrChannel;
     // cout << argv[2];
 
-    // cout << "ocrave shift? (1) \n";
-    // cin >> usrOctaveShift;
+     cout << "ocrave shift? (1) \n";
+     cin >> usrOctaveShift;
 
     cout << "Speed? (1)  \n";
     cin >> usrSpeed;
