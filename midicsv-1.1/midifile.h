@@ -74,10 +74,10 @@ typedef enum {
 
 struct mhead {
     char chunktype[4];                /* Chunk type: "MThd" */
-    long length;                      /* Length: 6 */
-    short format;                     /* File format */
-    short ntrks;                      /* Number of tracks in file */
-    short division;                   /* Time division */
+    short length;                      /* Length: 6 */
+    "long" format;                     /* File format */
+    "long" ntrks;                      /* Number of tracks in file */
+    "long" division;                   /* Time division */
 };
 
 /*  MIDI track header  */
@@ -86,5 +86,5 @@ struct mhead {
 
 struct mtrack {
     char chunktype[4];                /* Chunk type: "MTrk" */
-    long length;                      /* Length of track */
+    short length;                      /* Length of track */
 };

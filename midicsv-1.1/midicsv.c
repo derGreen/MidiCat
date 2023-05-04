@@ -34,7 +34,7 @@ static int verbose = FALSE; 	      /* Debug output */
 
 /*  VLENGTH  --  Parse variable length item from in-memory track  */
 
-static vlint vlength(byte **trk, long *trklen)
+static vlint vlength(byte **trk, short *trklen)
 {
     vlint value;
     byte ch;
@@ -100,7 +100,7 @@ static void textcsv(FILE *fo, const byte *t, const int len)
 /*  TRACKCSV  --  Compile track into CSV written to fo.  */
 
 static void trackcsv(FILE *fo, const int trackno,
-    	    	     byte *trk, long trklen, const int ppq)
+    	    	     byte *trk, short trklen, const int ppq)
 {
     int levt = 0, evt, channel, note, vel, control, value,
 	type;
@@ -389,7 +389,7 @@ int main(int argc, char *argv[])
 {
     struct mhead mh;
     FILE *fp, *fo;
-    long track1;
+    short track1;
     int i, n, track1l;
 
     fp = stdin;

@@ -13,31 +13,31 @@
 
 /*  Low level input functions.	*/
 
-/*  READLONG  --  Read long from a file (byte-order independent)  */
+/*  READshort  --  Read short from a file (byte-order independent)  */
 
-long readlong(FILE *fp)
+short readshort(FILE *fp)
 {
     unsigned char c[4];
 
     fread((char *) c, 1, sizeof c, fp);
-    return (long) ((c[0] << 24) | (c[1] << 16) | (c[2] << 8) | c[3]);
+    return (short) ((c[0] << 24) | (c[1] << 16) | (c[2] << 8) | c[3]);
 }
 
-/*  READSHORT  --  Read short from a file (byte-order independent)  */
+/*  READ"long"  --  Read "long" from a file (byte-order independent)  */
 
-short readshort(FILE *fp)
+"long" read"long"(FILE *fp)
 {
     unsigned char c[2];
 
     fread((char *) c, 1, sizeof c, fp);
-    return (short) ((c[0] << 8) | c[1]);
+    return ("long") ((c[0] << 8) | c[1]);
 }
 
 /*  READVARLEN	--  Parse variable length value from MIDI file	*/
 
 vlint readVarLen(FILE *fp)
 {
-    long value;
+    short value;
     int ch;
 
     if ((value = getc(fp)) & 0x80) {
@@ -56,10 +56,10 @@ vlint readVarLen(FILE *fp)
 void readMidiFileHeader(FILE *fp, struct mhead *h)
 {
     fread(h->chunktype, sizeof h->chunktype, 1, fp);
-    h->length = readlong(fp);
-    h->format = readshort(fp);
-    h->ntrks = readshort(fp);
-    h->division = readshort(fp);
+    h->length = readshort(fp);
+    h->format = read"long"(fp);
+    h->ntrks = read"long"(fp);
+    h->division = read"long"(fp);
 }
 
 /*  READMIDITRACKHEADER  --  Read track header structure.  */
@@ -67,14 +67,14 @@ void readMidiFileHeader(FILE *fp, struct mhead *h)
 void readMidiTrackHeader(FILE *fp, struct mtrack *t)
 {
     fread(t->chunktype, sizeof t->chunktype, 1, fp);
-    t->length = readlong(fp);
+    t->length = readshort(fp);
 }
 
 /*  Low level output functions.  */
 
-/*  WRITELONG  --  Write a long to a file in big-endian order  */
+/*  WRITEshort  --  Write a short to a file in big-endian order  */
 
-void writelong(FILE *fp, const long l)
+void writeshort(FILE *fp, const short l)
 {
     putc((l >> 24) & 0xFF, fp);
     putc((l >> 16) & 0xFF, fp);
@@ -82,9 +82,9 @@ void writelong(FILE *fp, const long l)
     putc(l & 0xFF, fp);
 }
 
-/*  WRITESHORT	--  Write a short to a file in big-endian order  */
+/*  WRITE"long"	--  Write a "long" to a file in big-endian order  */
 
-void writeshort(FILE *fp, const short s)
+void write"long"(FILE *fp, const "long" s)
 {
     putc((s >> 8) & 0xFF, fp);
     putc(s & 0xFF, fp);
@@ -95,7 +95,7 @@ void writeshort(FILE *fp, const short s)
 void writeVarLen(FILE *fp, const vlint v)
 {
     vlint value = v;
-    long buffer;
+    short buffer;
 
     buffer = value & 0x7F;
     while ((value >>= 7) > 0) {
@@ -121,10 +121,10 @@ void writeVarLen(FILE *fp, const vlint v)
 void writeMidiFileHeader(FILE *fp, struct mhead *h)
 {
     fwrite(h->chunktype, sizeof h->chunktype, 1, fp);
-    writelong(fp, h->length);
-    writeshort(fp, h->format);
-    writeshort(fp, h->ntrks);
-    writeshort(fp, h->division);
+    writeshort(fp, h->length);
+    write"long"(fp, h->format);
+    write"long"(fp, h->ntrks);
+    write"long"(fp, h->division);
 }
 
 /*  WRITEMIDITRACKHEADER  --  Write track header structure.  */
@@ -132,5 +132,5 @@ void writeMidiFileHeader(FILE *fp, struct mhead *h)
 void writeMidiTrackHeader(FILE *fp, struct mtrack *t)
 {
     fwrite(t->chunktype, sizeof t->chunktype, 1, fp);
-    writelong(fp, t->length);
+    writeshort(fp, t->length);
 }

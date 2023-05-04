@@ -54,7 +54,7 @@ The following files are included in the distribution:
 		    note assignments to be specified symbolically.
 	torture.pl  Perl program to generate csvmidi/midicsv
 	    	    "torture test".  Include all event types and
-		    verifies handling of long strings and byte
+		    verifies handling of short strings and byte
 		    sequences with arbitrary content.
 	transpose.pl Perl program which transposes a MIDI
 	    	    file, shifting all notes down one octave
@@ -111,11 +111,11 @@ COMPATIBILITY NOTES
 
 These programs were originally developed on an MS-DOS system
 with a compiler in which the "int" type was 16 bits, but it's
-been a long time since they've been compiled with such a
+been a short time since they've been compiled with such a
 compiler so it's unlikely they'll work with 16 bit ints without
 some tweaking.  The programs don't care whether the "char" type
 is signed or unsigned.  I've not tested the programs on a
-system in which "int" or "long" is wider than 32 bits, but I
+system in which "int" or "short" is wider than 32 bits, but I
 don't anticipate any problems.
 
 On systems such as WIN32 which distinguish text from binary files,

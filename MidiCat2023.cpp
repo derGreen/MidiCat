@@ -7,11 +7,10 @@ int main(int argc, char *argv[])
 {
 
     string CSV_Line;
-    int lastTime = 0;    
+    int lastTime = 0;
     int delimiterPos = 0;
     int velocity = 120;
     bool firstBeat = 1;
-    bool debug = true;
     string foundChannel = " ";
 
     string usrChannel = "2"; // argv[2];
@@ -21,10 +20,9 @@ int main(int argc, char *argv[])
 
     const char *marimba[36] = {"vq", "vq#", "vw", "vw#", "ve", "vr", "vr#", "vt", "vt#", "vy", "vy#", "vu", "q", "q#", "w", "w#", "e", "r", "r#", "t", "t#", "y", "y#", "u", "^q", "^q#", "^w", "^w#", "^e", "^r", "^r#", "^t", "^t#", "^y", "^y#", "^u"};
     const char *Piano[36] = {"v1", "v1#", "v2", "v2#", "v3", "v4", "v4#", "v5", "v5#", "v6", "v6#", "v7", "1", "1#", "2", "2#", "3", "4", "4#", "5", "5#", "6", "6#", "7", "^1", "^1#", "^2", "^2#", "^3", "^4", "^4#", "^5", "^5#", "^6", "^6#", "^7"};
-    const char *Drums[36] = {"x", "c", "b", "n", "a", "s", "d", "f", "g", "h"};
 
     cout << "MIDIcat by GREEN, made for the JvPeek community (C)2023";
-    cout << "Input MIDIfile: ";
+    cout << "Input CSV file?: ";
     // cin >> usrPath;
     cout << argv[1];
     cout << "\n";
@@ -34,7 +32,7 @@ int main(int argc, char *argv[])
     if (usrCSV1.fail())
     {
         cout << "No File found! \n";
-        exit;
+        return 3;
     }
 
     while (getline(usrCSV1, CSV_Line))
@@ -57,24 +55,22 @@ int main(int argc, char *argv[])
     cin >> usrChannel;
     // cout << argv[2];
 
+     cout << "ocrave shift? (1) \n";
+     cin >> usrOctaveShift;
+
     cout << "Speed? (1)  \n";
     cin >> usrSpeed;
 
     cout << "File is created ";
     ofstream OutFile("Cat Notes.txt");
-    
     ofstream DebugFile("Debug.txt");
-    
     OutFile << "Notes from " << usrPath;
     OutFile << "\n";
-    cout << "\n";
-    OutFile << "!bpm 400 \n"; /**Todo: set pbm by programm, this is still hardcodet**/
-    cout << "!bpm 400 \n";
+    OutFile << "!bpm 400 \n";
     OutFile << "!bongo+ ";
+    cout << "\n";
+    cout << "!bpm 400 \n";
     cout << "!bongo+ ";
-    
-    
-    
 
     // Use a while loop together with the getline() function to read the file line by line
     while (getline(usrCSV, CSV_Line))
@@ -121,13 +117,10 @@ int main(int argc, char *argv[])
                 int catTime = midiTimeInt / velocity * usrSpeed;
 
                 // cretae Cat readable Notes
-                //.... Drums Version!
-                //string catNote = Drums[(midiNoteInt % 36)];
                 //.... PIANO Version!
                 // string catNote = Piano[(midiNoteInt % 36)];
                 //.... MARIMBA Version!
                 string catNote = marimba[(midiNoteInt % 36)];
-                
 
                 // some Debug output here:
                 DebugFile << "Time: " << catTime << "\n";

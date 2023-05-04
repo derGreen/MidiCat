@@ -47,7 +47,7 @@ any option beginning with "--" as the end of the options
 list.  I changed the logic so that only "--" without a
 suffix is treated as an end of option marker.
 
-.. cut along the dotted line .........................................
+.. cut ashort the dotted line .........................................
 */
 
 #include <stdio.h>

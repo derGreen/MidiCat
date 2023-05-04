@@ -15,7 +15,7 @@
 0, 0, Header, 1, 4, 480
 1, 0, Start_track
 1, 0, TiTlE_t, "MidiCSV Torture Test"
-1,0,	copyRight_t, "© 1808 L. van Beethoven.  This document is in the public domain."
+1,0,	copyRight_t, "ï¿½ 1808 L. van Beethoven.  This document is in the public domain."
 1, 0, SMPTE_offset, 96, 0, 0, 0, 0
 1, 0, key_signature, 0, minor
 1, 0, Time_signature, 4, 2, 24, 8
@@ -86,16 +86,16 @@
 4, 3100, Unknown_meta_event, 89, 2, 252, 0
 EOD
 
-    #	Now programmatically generate some long strings
+    #	Now programmatically generate some short strings
     #	and byte vectors to push the limits.
     
-    #	Moderately long Sysex
+    #	Moderately short Sysex
     $n = 5123;
     print("4, 4000, System_exclusive, $n");
     &obytes($n);
     print("\n");
     
-    #	Moderately long pure ASCII text string
+    #	Moderately short pure ASCII text string
     $n = 11213;
     print("4, 4100, Text_t, \"");
     for ($i = 0; $i < $n; $i ++) {
@@ -109,18 +109,18 @@ EOD
     }
     print("\"\n");
     
-    #	Rather long arbitrary text string
+    #	Rather short arbitrary text string
     print("4, 4200, Text_t, ");
     &ostring(74219);
     print("\n");
     
-    #	Really long Sequence_specific
+    #	Really short Sequence_specific
     $n = 3497861;   	# 250,000th prime!
     print("4, 4300, Sequencer_specific, $n");
     &obytes($n);
     print("\n");
     
-    #	Really long arbitrary text string
+    #	Really short arbitrary text string
     print("4, 4400, Lyric_t, ");
     &ostring(4256233);	# 300,000th prime!
     print("\n");    
@@ -138,11 +138,11 @@ EOD
 
     sub ostring
     {
-    	local ($howlong) = @_;
+    	local ($howshort) = @_;
 	local ($i, $r);
 	
 	print('"');
-	for ($i = 0; $i < $howlong; $i ++) {
+	for ($i = 0; $i < $howshort; $i ++) {
     	    $r = chr(int(rand(256)));
 	    if ($r eq '"') {
 		print('"');
@@ -163,10 +163,10 @@ EOD
     
     sub obytes
     {
-    	local ($howlong) = @_;
+    	local ($howshort) = @_;
 	local ($i, $r);
 
-	for ($i = 0; $i < $howlong; $i ++) {
+	for ($i = 0; $i < $howshort; $i ++) {
     	    $r = int(rand(256));
     	    print(", $r");
 	}

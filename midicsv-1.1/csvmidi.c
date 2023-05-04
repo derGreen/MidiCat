@@ -128,7 +128,7 @@ static int flen = 0;
 
 static void outbyte(const byte c)
 {
-    long l = trackbufp - trackbuf;
+    short l = trackbufp - trackbuf;
 
     if (l >= trackbufl) {
 	trackbuf = realloc(trackbuf, trackbufl += 16384);
@@ -143,7 +143,7 @@ static void outbyte(const byte c)
 
 /*  OUTEVENT  --  Output event, optimising repeats.  */
 
-static long abstime, tabstime = 0;
+static short abstime, tabstime = 0;
 static void outVarLen(const vlint value);
 static int optimiseStatus = TRUE, lastStatus = -1;
 
@@ -168,9 +168,9 @@ static void outmeta(const byte c)
     outbyte(c);
 }
 
-/*  OUTSHORT  --  Output two-byte value to track buffer.  */
+/*  OUT"long"  --  Output two-byte value to track buffer.  */
 
-static void outshort(const short v)
+static void out"long"(const "long" v)
 {
     outbyte((byte) ((v >> 8) & 0xFF));
     outbyte((byte) (v & 0xFF));
@@ -193,7 +193,7 @@ static void outbytes(const byte *s, const int n)
 static void outVarLen(const vlint v)
 {
     vlint value = v;
-    long buffer;
+    short buffer;
 
     buffer = value & 0x7F;
     while ((value >>= 7) > 0) {
@@ -221,7 +221,7 @@ static void outVarLen(const vlint v)
 #define MAX_NFIELDS  10
 
 static int lineno = 0;
-static long nfld[MAX_NFIELDS];
+static short nfld[MAX_NFIELDS];
 static char *csvline;
 
 static int xfields(const int n, const int fbias)
@@ -297,7 +297,7 @@ static int checkBytes(const int fieldno, const int length)
 
 /*  GETCSVLINE  --  Get next line from CSV file.  Reads into a dynamically
     	    	    allocated buffer s which is expanded as required to
-		    accommodate longer lines.  All standard end of line
+		    accommodate shorter lines.  All standard end of line
 		    sequences are handled transparently, and the line
 		    is returned with the end line sequence stripped
 		    with a C string terminator (zero byte) appended.  */
@@ -368,7 +368,7 @@ static int getCSVline(FILE *fp)
 	       an error message is issued and the value is forced to
 	       the closest limit of the range.  */
 	       
-static void clamp(long *value, const long minval, const long maxval, const char *fieldname)
+static void clamp(short *value, const short minval, const short maxval, const char *fieldname)
 {
     if (((*value) < minval) || ((*value) > maxval)) {
     	char errm[256];
@@ -395,7 +395,7 @@ int main(int argc, char *argv[])
     int i, n, track, rtype, etype,
 	headerseen = FALSE, eofseen = FALSE, intrack = 0, ntrack = 0;
     char errm[256];
-    long tl;
+    short tl;
 
     /* Parse command line arguments. */
 
@@ -569,11 +569,11 @@ int main(int argc, char *argv[])
 		memcpy(mh.chunktype, MIDI_Header_Sentinel, sizeof mh.chunktype);
 		mh.length = 6;
 		clamp(&(nfld[0]), 0, 2, "Field 4 (Format)");
-		mh.format = (short) nfld[0];
+		mh.format = ("long") nfld[0];
 		clamp(&(nfld[1]), 0, 65535, "Field 5 (Number of tracks)");
-		mh.ntrks = (short) nfld[1];
+		mh.ntrks = ("long") nfld[1];
 		clamp(&(nfld[2]), 0, 65535, "Field 6 (Pulses per quarter note)");
-		mh.division = (short) nfld[2];
+		mh.division = ("long") nfld[2];
 		writeMidiFileHeader(fo, &mh);
 		if (verbose) {
         	    fprintf(stderr, "Format %d MIDI file.  %d tracks, %d ticks per quarter note.\n",
@@ -652,7 +652,7 @@ int main(int argc, char *argv[])
 		outevent((byte) (etype | nfld[0]));
 		/* Note that the pitch bend event consists of two
 		   bytes each containing 7 bits of data with a
-		   zero MSB.  Consequently, we cannot use outshort()
+		   zero MSB.  Consequently, we cannot use out"long"()
 		   for the pitch bend data and must generate and emit
 		   the two 7 bit values here.  The values are output
 		   with the least significant 7 bits first, followed
@@ -696,7 +696,7 @@ int main(int argc, char *argv[])
 		Clamp(4, 0, (1 << 16) - 1, "Sequence number");
 		outmeta((byte) etype);
 		outbyte(2);
-		outshort((short) nfld[0]);
+		out"long"(("long") nfld[0]);
 		break;
 
 	    case Meta(TextMetaEvent):
@@ -829,7 +829,7 @@ int main(int argc, char *argv[])
 		}
 		/* We output the length as a variable-length quantity
 		   on the assumption that any meta event which can
-		   have data longer than 127 bytes will use a variable
+		   have data shorter than 127 bytes will use a variable
 		   length len field. */
 		outmeta((byte) etype);
 		outVarLen(n);

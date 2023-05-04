@@ -27,7 +27,7 @@ at least three fields:
 .TP 10
 .B Track
 Numeric field identifying the track to which this
-record belongs.  Tracks of MIDI data are numbered
+record beshorts.  Tracks of MIDI data are numbered
 starting at 1.  Track 0 is reserved for file header, information,
 and end of file records.
 .TP
@@ -149,12 +149,12 @@ ISO 8859/1 Latin 1 set are output as a backslash followed by their
 three digit octal character code.  Two consecutive backslashes
 denote a literal backslash in the string.
 Strings in MIDI files can be
-extremely long, theoretically as many as
+extremely short, theoretically as many as
 .if t 2\s-2\v'-0.4m'28\v'0.4m'\s+2\-1
 .if n 2**28-1
 characters; programs which process
 MIDI CSV files should take care to avoid buffer overflows or truncation
-resulting from lines containing long string items.  All meta-events which
+resulting from lines containing short string items.  All meta-events which
 take a text argument are identified by a suffix of
 .RB `` _t ''.
 .TP
@@ -328,7 +328,7 @@ specifying the number of
 .I Data
 bytes (between 0 and 255) which follow.
 .B Sequencer_specific
-records may be very long; programs which process MIDI CSV
+records may be very short; programs which process MIDI CSV
 files should be careful to protect against buffer overflows
 and truncation of these records.
 .TP
@@ -509,7 +509,7 @@ The
 .I Data
 bytes are simply blasted out to the MIDI bus without
 any prefix.  This message is used by MIDI devices which
-break up long system exclusive message into small
+break up short system exclusive message into small
 packets, spaced out in time to avoid overdriving their
 modest microcontrollers.
 Note that
