@@ -1,80 +1,201 @@
 #include <iostream>
 #include <fstream>
 #include <cstring>
+#include <iomanip>
 using namespace std;
 
 int main(int argc, char *argv[])
 {
 
     string CSV_Line;
-    int lastTime = 0;    
+    int lastTime = 0;
     int delimiterPos = 0;
     int velocity = 120;
     bool firstBeat = 1;
-    bool debug = true;
     string foundChannel = " ";
 
     string usrChannel = "2"; // argv[2];
-    int usrOctaveShift = 1;
     string usrPath = argv[1];
-    int usrSpeed = 4;
+    int elementCounter = 0;
+    int catInst = 1;
 
-    const char *marimba[36] = {"vq", "vq#", "vw", "vw#", "ve", "vr", "vr#", "vt", "vt#", "vy", "vy#", "vu", "q", "q#", "w", "w#", "e", "r", "r#", "t", "t#", "y", "y#", "u", "^q", "^q#", "^w", "^w#", "^e", "^r", "^r#", "^t", "^t#", "^y", "^y#", "^u"};
+    const char *Marimba[36] = {"vq", "vq#", "vw", "vw#", "ve", "vr", "vr#", "vt", "vt#", "vy", "vy#", "vu", "q", "q#", "w", "w#", "e", "r", "r#", "t", "t#", "y", "y#", "u", "^q", "^q#", "^w", "^w#", "^e", "^r", "^r#", "^t", "^t#", "^y", "^y#", "^u"};
     const char *Piano[36] = {"v1", "v1#", "v2", "v2#", "v3", "v4", "v4#", "v5", "v5#", "v6", "v6#", "v7", "1", "1#", "2", "2#", "3", "4", "4#", "5", "5#", "6", "6#", "7", "^1", "^1#", "^2", "^2#", "^3", "^4", "^4#", "^5", "^5#", "^6", "^6#", "^7"};
-    const char *Drums[36] = {"x", "c", "b", "n", "a", "s", "d", "f", "g", "h"};
+    const char *Drums[10] = {"x", "c", "b", "n", "m", "a", "s", "d", "f", "g"};
 
-    cout << "MIDIcat by GREEN, made for the JvPeek community (C)2023";
-    cout << "Input MIDIfile: ";
-    // cin >> usrPath;
-    cout << argv[1];
+    //================================================
+    // Start Programe here
+    //================================================
+
+    cout << "MIDIcat by GREEN, made for the JvPeek community (C)2022-2023";
+    cout << "Input CSV file?: ";
+
+    cout << argv[1]; // cin >> usrPath;
     cout << "\n";
-    // Read from the text file
-    ifstream usrCSV1(usrPath);
 
-    if (usrCSV1.fail())
+    if (usrPath.substr(usrPath.find_last_of(".")) == ".mid") // find file extention and compare to .mid
     {
-        cout << "No File found! \n";
-        exit;
+        cout << "File is Midi \n";
+    }
+    else
+    {
+        cout << "No Midi file \n";
+        cout << "EXIT";
+        return 3;
     }
 
-    while (getline(usrCSV1, CSV_Line))
+    ifstream in_file(usrPath, ios::binary);
+    in_file.seekg(0, ios::end);
+    int file_size = in_file.tellg();
+    cout << "Size of the file is " << file_size << " bytes" << endl;
+
+    int MidiArray[file_size];
+    cout << "MidiArray size is: " << file_size << endl;
+    cout << "Array byte Size is: " << sizeof(MidiArray) / sizeof(int) << endl;
+
+    // open the binary file for reading
+    ifstream infile(usrPath, ios::binary);
+
+    // check if the file was opened successfully
+    if (!infile)
     {
-        if (CSV_Line.find("Title_t") != -1)
+        cerr << "Error: could not open file" << endl;
+        return 1;
+    }
+    //========================================
+    // make an array with byte values from Midi file
+    //========================================
+
+    // read the file byte by byte as integer
+    unsigned char byte;
+    while (infile.read(reinterpret_cast<char *>(&byte), sizeof(byte)))
+    {
+        int value = static_cast<int>(byte);
+        MidiArray[elementCounter] = value;
+        elementCounter++;
+    }
+
+    // close the file
+    infile.close();
+
+    // read Midi header here
+
+    //====================================
+    // 4 bytes ascii String "MThd"
+    // 4 bytes number of bytes in Header (often just 06)
+    // 2 bytes file format 0 or 1
+    // 2 bytes number of tracks
+    // 2 bytes ticks per quater note (speed)
+    //====================================
+
+    int headerSize = MidiArray[4];
+    headerSize += MidiArray[5];
+    headerSize += MidiArray[6] * 256;
+    headerSize += MidiArray[7]; // Midi byte 4 to 7
+    cout << "head size is: " << headerSize << endl;
+    cout << endl;
+
+    int midiTracks = MidiArray[10] * 256;
+    midiTracks += MidiArray[11]; // Midi bytes 11 to 12
+    if (MidiArray[9] + (MidiArray[8] * 256) == 0)
+    {
+        cout << "Singel track Midi file just " << midiTracks << " tarck" << endl;
+    }
+    else
+    {
+        cout << "Multi track Midi file, " << midiTracks << "  tracks" << endl;
+    }
+
+    int midiSpeed = MidiArray[12] * 256; // Midi bytes 13 to 14
+    midiSpeed += MidiArray[13];          // Midi bytes 13 to 14
+    cout << "Speed: " << midiSpeed << endl;
+
+    int startTrack = 8 + headerSize;
+
+    int bytesTrack0 = MidiArray[startTrack + 6] * 256; // Midi bytes 15 to 16
+    bytesTrack0 += MidiArray[startTrack + 7];          // Midi bytes 15 to 16
+    cout << "Number of Bytes in Track 0: " << bytesTrack0 << endl;
+    cout << endl;
+
+    int TrackNum = 0;
+    while (startTrack < sizeof(MidiArray) / sizeof(int))
+    {
+        startTrack += bytesTrack0 + 8;
+        TrackNum++;
+        bytesTrack0 = MidiArray[startTrack + 6] * 256; // Midi bytes 15 to 16
+        bytesTrack0 += MidiArray[startTrack + 7];      // Midi bytes 15 to 16
+        cout << "Number of Bytes in Track " << TrackNum << ": " << bytesTrack0 << endl;
+        cout << endl;
+
+        // iterate throw the tracks
+        int counter = 0;
+        string trackName;
+        int x = 0;
+        int i = startTrack + 8;
+
+        while (i <= startTrack + 8 + bytesTrack0)
+
         {
-            foundChannel = foundChannel + CSV_Line.substr(0, CSV_Line.find(",")) + " " + CSV_Line.substr(CSV_Line.rfind(",")+1 , 8 ) + " - ";
-        };
-          if (CSV_Line.find("Text_t") != -1)
-        {
-            foundChannel = foundChannel + CSV_Line.substr(0, CSV_Line.find(",")) + " " + CSV_Line.substr(CSV_Line.rfind(",")+1 , 12 ) + "\n";
-        };
-    };
-    usrCSV1.close();
+
+            if (MidiArray[i] == 255)
+            {
+
+                i++;
+                if (MidiArray[i] == 3)
+                {
+
+                    i++;
+                    counter = MidiArray[i];
+                    x = 0;
+                    i++;
+                    while (x < counter)
+                    {
+                        trackName += MidiArray[i];
+                        i++;
+                        x++;
+                    }
+                    cout << "Track Name: " << trackName << endl;
+                }
+                else if (MidiArray[i] == 47)
+                {
+                    cout << "Midi FIle ende here";
+                    return 5;
+                }
+            }
+
+            i++;
+        }
+    }
+    //==================================
+    // get some infos here
+    //==================================
 
     ifstream usrCSV(usrPath);
 
+    /*
     cout << foundChannel << " found as Midichannel \n";
+
     cout << "Midi channel?";
     cin >> usrChannel;
-    // cout << argv[2];
 
-    cout << "Speed? (1)  \n";
-    cin >> usrSpeed;
+    cout << "Instument? (1)Marimba (2)Piano (3)Drums \n";
+    cin >> catInst;
+    */
 
-    cout << "File is created ";
+    //==================================
+    // Create output file here
+    //==================================
+
+    cout << "Cat-file is created:";
     ofstream OutFile("Cat Notes.txt");
-    
     ofstream DebugFile("Debug.txt");
-    
     OutFile << "Notes from " << usrPath;
     OutFile << "\n";
-    cout << "\n";
-    OutFile << "!bpm 400 \n"; /**Todo: set pbm by programm, this is still hardcodet**/
-    cout << "!bpm 400 \n";
+    OutFile << "!bpm 400 \n";
     OutFile << "!bongo+ ";
+    cout << "\n";
+    cout << "!bpm 400 \n";
     cout << "!bongo+ ";
-    
-    
-    
 
     // Use a while loop together with the getline() function to read the file line by line
     while (getline(usrCSV, CSV_Line))
@@ -111,28 +232,30 @@ int main(int argc, char *argv[])
                 int midiVelInt = stoi(midiVelocity);
                 delimiterPos = 0;
 
-                // DebugFile << "Midi Chanel ist " << midiChannelStr << "\n";
-                // DebugFile << "Midi Time ist " << midiTimeStr << "\n";
-                // DebugFile << "Midi Command ist " << midiCommand << "\n";
+                midiNoteInt = midiNoteInt - (12); // add octave shift
 
-                // add octave shift
-                midiNoteInt = midiNoteInt - (usrOctaveShift * 12);
-                // add Time divider
-                int catTime = midiTimeInt / velocity * usrSpeed;
+                int catTime = midiTimeInt / velocity; // add Time divider
+                string catNote = "";
 
-                // cretae Cat readable Notes
-                //.... Drums Version!
-                //string catNote = Drums[(midiNoteInt % 36)];
-                //.... PIANO Version!
-                // string catNote = Piano[(midiNoteInt % 36)];
-                //.... MARIMBA Version!
-                string catNote = marimba[(midiNoteInt % 36)];
-                
+                switch (catInst)
+                { // cretae Cat readable Notes
+                case 1:
 
-                // some Debug output here:
-                DebugFile << "Time: " << catTime << "\n";
-                DebugFile << "Midi Velocety" << midiVelocity << "\n";
-                DebugFile << "Midi Velocety INT" << midiVelInt << "\n";
+                    catNote = Piano[(midiNoteInt % 36)]; //.... PIANO Version!
+                    break;
+                case 2:
+
+                    catNote = Marimba[(midiNoteInt % 36)]; //.... MARIMBA Version!
+                    break;
+                case 3:
+
+                    catNote = Drums[(midiNoteInt % 10)]; //.... Drum Version!
+                    break;
+                default:
+                    cout << "No Instrument - No Song \n";
+                    cout << "EXIT \n";
+                    return 3;
+                }
 
                 if (midiVelInt != 0)
                 {
