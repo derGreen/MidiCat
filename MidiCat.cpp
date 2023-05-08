@@ -2,6 +2,8 @@
 #include <fstream>
 #include <cstring>
 #include <iomanip>
+#include <map>
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -22,6 +24,139 @@ int main(int argc, char *argv[])
     const char *Marimba[36] = {"vq", "vq#", "vw", "vw#", "ve", "vr", "vr#", "vt", "vt#", "vy", "vy#", "vu", "q", "q#", "w", "w#", "e", "r", "r#", "t", "t#", "y", "y#", "u", "^q", "^q#", "^w", "^w#", "^e", "^r", "^r#", "^t", "^t#", "^y", "^y#", "^u"};
     const char *Piano[36] = {"v1", "v1#", "v2", "v2#", "v3", "v4", "v4#", "v5", "v5#", "v6", "v6#", "v7", "1", "1#", "2", "2#", "3", "4", "4#", "5", "5#", "6", "6#", "7", "^1", "^1#", "^2", "^2#", "^3", "^4", "^4#", "^5", "^5#", "^6", "^6#", "^7"};
     const char *Drums[10] = {"x", "c", "b", "n", "m", "a", "s", "d", "f", "g"};
+
+    map<int, string> gmInstFamiliy;
+
+    gmInstFamiliy.insert(pair<int, string>(1, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(2, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(3, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(4, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(5, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(6, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(7, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(8, "Piano"));
+    gmInstFamiliy.insert(pair<int, string>(9, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(10, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(11, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(12, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(13, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(14, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(15, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(16, "Chromatic Percussion"));
+    gmInstFamiliy.insert(pair<int, string>(17, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(18, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(19, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(20, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(21, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(22, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(23, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(24, "Organ"));
+    gmInstFamiliy.insert(pair<int, string>(25, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(26, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(27, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(28, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(29, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(30, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(31, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(22, "Guitar"));
+    gmInstFamiliy.insert(pair<int, string>(33, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(34, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(35, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(36, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(37, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(38, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(39, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(40, "Bass"));
+    gmInstFamiliy.insert(pair<int, string>(41, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(42, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(43, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(44, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(45, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(46, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(47, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(48, "Strings"));
+    gmInstFamiliy.insert(pair<int, string>(49, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(50, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(51, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(52, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(53, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(54, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(55, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(56, "Ensemble"));
+    gmInstFamiliy.insert(pair<int, string>(57, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(58, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(59, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(60, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(61, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(62, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(63, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(64, "Brass"));
+    gmInstFamiliy.insert(pair<int, string>(65, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(66, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(67, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(68, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(69, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(70, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(71, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(72, "Reed"));
+    gmInstFamiliy.insert(pair<int, string>(73, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(74, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(75, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(76, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(77, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(78, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(79, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(80, "Pipe"));
+    gmInstFamiliy.insert(pair<int, string>(81, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(82, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(83, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(84, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(85, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(86, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(87, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(88, "Synth Lead"));
+    gmInstFamiliy.insert(pair<int, string>(89, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(90, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(91, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(92, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(93, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(94, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(95, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(96, "Synth Pad"));
+    gmInstFamiliy.insert(pair<int, string>(97, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(98, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(99, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(100, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(101, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(102, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(103, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(104, "Synth Effects"));
+    gmInstFamiliy.insert(pair<int, string>(105, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(106, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(107, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(108, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(109, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(110, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(111, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(112, "Ethnic"));
+    gmInstFamiliy.insert(pair<int, string>(113, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(114, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(115, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(116, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(117, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(118, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(119, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(120, "Percussive"));
+    gmInstFamiliy.insert(pair<int, string>(121, "Sound Effects"));
+    gmInstFamiliy.insert(pair<int, string>(122, "Sound Effects"));
+    gmInstFamiliy.insert(pair<int, string>(123, "Sound Effects"));
+    gmInstFamiliy.insert(pair<int, string>(124, "Sound Effects"));
+    gmInstFamiliy.insert(pair<int, string>(125, "Sound Effects"));
+    gmInstFamiliy.insert(pair<int, string>(126, "Sound Effects"));
+    gmInstFamiliy.insert(pair<int, string>(127, "Sound Effects"));
+    gmInstFamiliy.insert(pair<int, string>(128, "Sound Effects"));
+
+    cout << gmInstFamiliy[1] << ", " << gmInstFamiliy[9] << ", "<< gmInstFamiliy[10] <<endl;
 
     //================================================
     // Start Programe here
